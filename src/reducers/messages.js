@@ -1,4 +1,4 @@
-import * as types from '../constants/ActionTypes'
+import * as types from '../constants/ActionTypes';
 
 const messages = (state = [], action) => {
     switch (action.type) {
@@ -10,11 +10,11 @@ const messages = (state = [], action) => {
                     author: action.author,
                     id: action.id
                 }
-            ])
+            ]);
         default:
-            return state
+            return state;
     }
-}
+};
 
-export default messages
+export default messages;
 

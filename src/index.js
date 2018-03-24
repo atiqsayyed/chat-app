@@ -8,7 +8,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import reducers from './reducers';
 import setUpSocket from './sockets';
-import handleNewMessage from './sagas';
+import {sendMessageToServer,createChannel} from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducers, applyMiddleware(sagaMiddleware));
@@ -32,7 +32,8 @@ class UserPage extends  React.Component{
             alert("Name Cannot be blank!");
         }else{
             const socket = setUpSocket(store.dispatch,username);
-            sagaMiddleware.run(handleNewMessage,{socket, username});
+            sagaMiddleware.run(sendMessageToServer,{socket, username});
+            sagaMiddleware.run(createChannel,{socket, username});
 
             ReactDOM.render(
                 <Provider store={store}>

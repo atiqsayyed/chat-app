@@ -8,7 +8,9 @@ class App extends Component {
     render() {
         return (
             <div id="container">
-                <Sidebar />
+                <section id="side">
+                    <Sidebar />
+                </section>
                 <section id="main">
                     <MessagesList />
                     <AddMessage />
