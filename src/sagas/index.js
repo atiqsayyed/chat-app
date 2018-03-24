@@ -15,4 +15,16 @@ const createChannel = function* createChannel(params) {
     });
 }
 
-export {sendMessageToServer,createChannel};
+const manageChannelSwitch= function* manageChannelSwith(params) {
+    yield takeEvery(types.REQUEST_CHANNEL_MESSAGES, (action) => {
+        action.author = params.username
+        console.log("In ManageChannelSwitch"+params.username)
+        params.socket.send(JSON.stringify({
+            type: types.VIEW_CHANNEL,
+            name: action.name,
+            channel: action.name
+        }))
+    });
+}
+
+export {sendMessageToServer,createChannel,manageChannelSwitch};

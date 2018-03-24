@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
 
-import {addUser, messageReceived, populateUserList, populateChannelsList, joinChannel} from "../actions/index";
+import {addUser, messageReceived, populateUserList, populateChannelsList, joinChannel, viewChannel} from "../actions/index";
 
 const setUpSocket = (dispatch, username) =>{
     const socket = new WebSocket('ws://localhost:8989');
@@ -13,6 +13,10 @@ const setUpSocket = (dispatch, username) =>{
         socket.send(JSON.stringify({
             type: types.CHANNELS_LIST,
             name: username
+        }));
+        socket.send(JSON.stringify({
+            type: types.VIEW_CHANNEL,
+            channel: 'general'
         }));
     };
 
@@ -30,10 +34,14 @@ const setUpSocket = (dispatch, username) =>{
                 break;
             case types.CHANNELS_LIST:
                 dispatch(populateChannelsList(data.channels))
-                break
+                break;
             case types.JOIN_CHANNEL:{
-                console.log("*** IN sockeet dispatch *** "+JSON.stringify(data))
                 dispatch(joinChannel((data.author, data.name)))
+                break
+            }
+            case types.VIEW_CHANNEL:{
+                console.log("**** dispatching View Channel to component")
+                dispatch(viewChannel(data.name, data.messages))
                 break
             }
             default:

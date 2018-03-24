@@ -8,7 +8,7 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import reducers from './reducers';
 import setUpSocket from './sockets';
-import {sendMessageToServer,createChannel} from './sagas';
+import {sendMessageToServer,createChannel, manageChannelSwitch} from './sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(reducers, applyMiddleware(sagaMiddleware));
@@ -34,6 +34,7 @@ class UserPage extends  React.Component{
             const socket = setUpSocket(store.dispatch,username);
             sagaMiddleware.run(sendMessageToServer,{socket, username});
             sagaMiddleware.run(createChannel,{socket, username});
+            sagaMiddleware.run(manageChannelSwitch,{socket, username});
 
             ReactDOM.render(
                 <Provider store={store}>

@@ -4,11 +4,13 @@ let nextMessageId=0
 let nextUserId=0
 let nextChannelId =0
 
-export const addMessage = (message, author) => ({
+export const addMessage = (message, author, channel, channelType) => ({
     type: types.ADD_MESSAGE,
-    id: nextMessageId++,
+    id: nextMessageId + 1,
     message,
-    author
+    author,
+    channel,
+    channelType
 });
 
 export const addUser = name => ({
@@ -17,11 +19,12 @@ export const addUser = name => ({
     name
 });
 
-export const messageReceived = (message, author) => ({
+export const messageReceived = (message, author, channel) => ({
     type: types.MESSAGE_RECEIVED,
     id: nextMessageId++,
     message,
-    author
+    author,
+    channel
 });
 
 export const populateUserList = users =>({
@@ -52,3 +55,14 @@ export const joinChannel = (author, name) => ({
     author
 })
 
+export const viewChannel = (channelName, messages) => ({
+    type: types.VIEW_CHANNEL,
+    channel: channelName,
+    messages: messages
+})
+
+export const requestUserChat = (name, username) => ({
+    type: types.REQUEST_USER_CHAT,
+    name: name,
+    username: username,
+})
