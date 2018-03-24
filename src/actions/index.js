@@ -46,3 +46,9 @@ export const populateChannelsList = channels => ({
     channels: channels
 })
 
+export const joinChannel = (author, name) => ({
+    type: types.JOIN_CHANNEL,
+    name,
+    author
+})
+

@@ -18,7 +18,7 @@ class App extends Component {
                     {/*<AddMessage />*/}
                 {/*</section>*/}
                 <section id="side-2">
-                    <CreateChannel />
+                    <CreateChannel username={''}/>
                     <ChannelsSidebar/>
                 </section>
             </div>

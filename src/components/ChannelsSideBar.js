@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 const ChannelsSidebar = (props) => {
 
-  const onclick = (name) => {
-    props.dispatch(name);
+  const onclick = (channelName) => {
+    props.dispatch(channelName);
   }
 
   return (

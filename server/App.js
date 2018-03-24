@@ -1,3 +1,4 @@
+
 const WebSocket = require('ws')
 const Immutable = require('immutable')
 
@@ -5,10 +6,15 @@ const websocketServer = new WebSocket.Server({port:8989});
 
 const users = [];
 const CREATE_CHANNEL = 'CREATE_CHANNEL'
+const VIEW_CHANNEL = 'VIEW_CHANNEL'
 
 let channels = Immutable.Map([
     ['general', {users: Immutable.List(), messages: Immutable.List(["Hello"])}]
 ])
+
+const userChannelsMap = Immutable.Map([])
+const channelUsersMap = Immutable.Map([])
+const userSocketMap = Immutable.Map([])
 
 const sendMessageToAllUsers = (data, ws) =>{
     websocketServer.clients.forEach((client)=>{
@@ -17,6 +23,11 @@ const sendMessageToAllUsers = (data, ws) =>{
         }
     });
 };
+
+const sendMessageToConnectedSocket = (data, ws) => {
+    if (ws.readyState === WebSocket.OPEN)
+        ws.send(JSON.stringify(data))
+}
 
 const createChannel = (data, ws) => {
     console.log("******: "+JSON.stringify(data))
@@ -30,6 +41,18 @@ const createChannel = (data, ws) => {
         channels: Array.from(channels.keys()).map(ch => ({name: ch, id: id++}))
     }, '');
 }
+const viewChannel = (data, ws) => {
+    sendMessageToConnectedSocket({type: VIEW_CHANNEL, messages: Array.from(channels.get(data.channel).messages), name: data.channel}, ws)
+}
+
+const joinChannel = (data,ws) => {
+    let subscribedChannels = userChannelsMap.get(data.author)
+    userChannelsMap.set(users,subscribedChannels.push(data.channel))
+    let subscribedUsers = channelUsersMap.get(data.channel)
+    subscribedChannels.set(data.channel, subscribedUsers.push(data.author))
+    console.log("**** channel joined"+JSON.stringify(data))
+    // viewChannel(data, ws)
+}
 
 
 websocketServer.on('connection', (ws) =>{
@@ -41,6 +64,7 @@ websocketServer.on('connection', (ws) =>{
                 console.log("******* "+JSON.stringify(data));
                 index = users.length;
                 users.push({name:data.name, id:index+1});
+                userSocketMap.set(data.name, ws);
                 ws.send(JSON.stringify({
                     type: 'USERS_LIST',
                     users
@@ -62,6 +86,9 @@ websocketServer.on('connection', (ws) =>{
             case CREATE_CHANNEL :{
               createChannel(data,ws);
               break;
+            }
+            case 'JOIN_CHANNEL':{
+                joinChannel(data, ws)
             }
             default:
                 break;

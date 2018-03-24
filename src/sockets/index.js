@@ -1,6 +1,6 @@
 import * as types from '../constants/ActionTypes';
 
-import {addUser,messageReceived,populateUserList,populateChannelsList} from "../actions/index";
+import {addUser, messageReceived, populateUserList, populateChannelsList, joinChannel} from "../actions/index";
 
 const setUpSocket = (dispatch, username) =>{
     const socket = new WebSocket('ws://localhost:8989');
@@ -31,6 +31,11 @@ const setUpSocket = (dispatch, username) =>{
             case types.CHANNELS_LIST:
                 dispatch(populateChannelsList(data.channels))
                 break
+            case types.JOIN_CHANNEL:{
+                console.log("*** IN sockeet dispatch *** "+JSON.stringify(data))
+                dispatch(joinChannel((data.author, data.name)))
+                break
+            }
             default:
                 break;
         }
