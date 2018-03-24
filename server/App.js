@@ -7,8 +7,7 @@ const users = [];
 const CREATE_CHANNEL = 'CREATE_CHANNEL'
 
 let channels = Immutable.Map([
-    ['general', {users: Immutable.List(), messages: Immutable.List([beginningOfChannel('general')])}],
-    ['react', {users: Immutable.List(), messages: Immutable.List([beginningOfChannel('react')])}]
+    ['general', {users: Immutable.List(), messages: Immutable.List(["Hello"])}]
 ])
 
 const sendMessageToAllUsers = (data, ws) =>{
@@ -19,26 +18,15 @@ const sendMessageToAllUsers = (data, ws) =>{
     });
 };
 
-const addUser = (data, ws) => {
-    index = users.length;
-    users.push({name:data.name, id:index+1});
-    ws.send(JSON.stringify({
-        type: 'USERS_LIST',
-        users
-    }));
-    sendMessageToAllUsers({
-        type: 'USERS_LIST',
-        users
-    }, ws);
-};
-
 const createChannel = (data, ws) => {
+    console.log("******: "+JSON.stringify(data))
     let ch = channels.get(data.name, {users: Immutable.List(data.author),
-        messages: Immutable.List([beginningOfChannel(data.name)])})
+        messages: Immutable.List()})
     channels = channels.set(data.name, ch)
-    let id = 0
-    broadcast({
-        type: CHANNELS_LIST,
+    console.log("Channel created: "+JSON.stringify(data))
+    let id = 0;
+    sendMessageToAllUsers({
+        type: 'CHANNELS_LIST',
         channels: Array.from(channels.keys()).map(ch => ({name: ch, id: id++}))
     }, '');
 }
@@ -50,15 +38,31 @@ websocketServer.on('connection', (ws) =>{
         const data = JSON.parse(message);
         switch (data.type){
             case 'ADD_USER':{
-                addUser();
+                console.log("******* "+JSON.stringify(data));
+                index = users.length;
+                users.push({name:data.name, id:index+1});
+                ws.send(JSON.stringify({
+                    type: 'USERS_LIST',
+                    users
+                }));
+                sendMessageToAllUsers({
+                    type: 'USERS_LIST',
+                    users
+                }, ws);
                 break;
             }
-            case 'ADD_MESSAGE': sendMessageToAllUsers({
-                type:'ADD_MESSAGE',
-                message: data.message,
-                author:data.author
-            }, ws);
+            case 'ADD_MESSAGE': {
+                sendMessageToAllUsers({
+                    type:'ADD_MESSAGE',
+                    message: data.message,
+                    author:data.author
+                }, ws);
                 break;
+            }
+            case CREATE_CHANNEL :{
+              createChannel(data,ws);
+              break;
+            }
             default:
                 break;
         }

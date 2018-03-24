@@ -11,6 +11,8 @@ const messages = (state = [], action) => {
                     id: action.id
                 }
             ]);
+        case types.CREATE_CHANNEL:
+            return state.concat([{ name: action.name, id: (state.length) }])
         default:
             return state;
     }

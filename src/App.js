@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import "./App.css";
 import {Sidebar} from "./containers/Sidebar";
+import {ChannelsSidebar} from "./containers/ChannelSidebar";
+import {CreateChannel} from "./containers/CreateChannel";
 import {MessagesList} from "./containers/MessagesList";
 import {AddMessage} from "./containers/AddMessage";
 
@@ -14,6 +16,9 @@ class App extends Component {
                 <section id="main">
                     <MessagesList />
                     <AddMessage />
+                </section>
+                <section id="side-2">
+                    <CreateChannel />
                 </section>
             </div>
         );

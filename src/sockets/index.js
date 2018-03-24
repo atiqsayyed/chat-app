@@ -10,6 +10,10 @@ const setUpSocket = (dispatch, username) =>{
             type: types.ADD_USER,
             name: username
         }));
+        socket.send(JSON.stringify({
+            type: types.CHANNELS_LIST,
+            name: username
+        }));
     };
 
     socket.onmessage = (event) =>{
@@ -24,6 +28,9 @@ const setUpSocket = (dispatch, username) =>{
             case types.USERS_LIST:
                 dispatch(populateUserList(data.users));
                 break;
+            case types.CHANNELS_LIST:
+                dispatch(populateChannelsList(data.channels))
+                break
             default:
                 break;
         }

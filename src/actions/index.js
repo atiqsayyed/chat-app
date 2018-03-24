@@ -36,3 +36,13 @@ export const createChannel = (author, name) => ({
     author
 });
 
+export const requestChannelMessages = (channelName) => ({
+    type: types.REQUEST_CHANNEL_MESSAGES,
+    name: channelName
+})
+
+export const populateChannelsList = channels => ({
+    type: types.CHANNELS_LIST,
+    channels: channels
+})
+
