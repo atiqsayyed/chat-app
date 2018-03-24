@@ -11,11 +11,11 @@ const ChannelsSidebar = (props) => {
     <aside id="sidebar" className="sidebar">
       <h2>Channels</h2>
       <ul>
-        {/*{props.channels.map(channel => (*/}
-          {/*<li key={channel.id}>*/}
-            {/*<a href='#' onClick={() => onclick(channel.name)}>{channel.name}</a>*/}
-          {/*</li>*/}
-        {/*))}*/}
+        {props.channels.map(channel => (
+          <li key={channel.id}>
+            <a href='#' onClick={() => onclick(channel.name)}>{channel.name}</a>
+          </li>
+        ))}
       </ul>
     </aside>
   );

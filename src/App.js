@@ -10,15 +10,16 @@ class App extends Component {
     render() {
         return (
             <div id="container">
-                <section id="side">
-                    <Sidebar />
-                </section>
-                <section id="main">
-                    <MessagesList />
-                    <AddMessage />
-                </section>
+                {/*<section id="side">*/}
+                    {/*<Sidebar />*/}
+                {/*</section>*/}
+                {/*<section id="main">*/}
+                    {/*<MessagesList />*/}
+                    {/*<AddMessage />*/}
+                {/*</section>*/}
                 <section id="side-2">
                     <CreateChannel />
+                    <ChannelsSidebar/>
                 </section>
             </div>
         );
