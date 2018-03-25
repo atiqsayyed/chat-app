@@ -6,7 +6,7 @@ import {
 } from "../actions/index";
 
 const setUpSocket = (dispatch, username) =>{
-    const socket = new WebSocket('ws://localhost:8989');
+    const socket = new WebSocket('ws://localhost:9090');
 
     socket.onopen = () =>{
         socket.send(JSON.stringify({

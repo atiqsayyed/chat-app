@@ -5,9 +5,17 @@
 
 # testing
 /coverage
-*.iml
-# production
 /build
+
+.idea/*
+client/node_modules/
+client/yarn-error.log
+client/yarn.lock
+chat-app.iml
+node_modules/
+yarn-error.log
+yarn.lock
+
 
 # misc
 .DS_Store

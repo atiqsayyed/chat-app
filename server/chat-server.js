@@ -1,7 +1,7 @@
 const WebSocket = require('ws');
 const Immutable = require('immutable');
 
-const webSocketServer = new WebSocket.Server({ port: 8989 });
+const webSocketServer = new WebSocket.Server({ port: 9090 });
 let usersChannelMap = Immutable.Map([]);
 let channelsUserMap = Immutable.Map([
     ['general', {users: Immutable.List(), messages: Immutable.List([{ message: 'start chatting', author: '' }])}]
