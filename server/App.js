@@ -1,13 +1,13 @@
-const WebSocket = require('ws')
-const Immutable = require('immutable')
+const WebSocket = require('ws');
+const Immutable = require('immutable');
 
-const webSocketServer = new WebSocket.Server({ port: 8989 })
-let usersChannelMap = Immutable.Map([])
+const webSocketServer = new WebSocket.Server({ port: 8989 });
+let usersChannelMap = Immutable.Map([]);
 let channelsUserMap = Immutable.Map([
     ['general', {users: Immutable.List(), messages: Immutable.List([{ message: 'start chatting', author: '' }])}]
 ]);
-let personalChats = Immutable.Map([Immutable.Set(), Immutable.List()])
-let socketUserMap = Immutable.Map([])
+let personalChats = Immutable.Map([Immutable.Set(), Immutable.List()]);
+let socketUserMap = Immutable.Map([]);
 
 const ADD_MESSAGE = 'ADD_MESSAGE'
 const ADD_USER = 'ADD_USER'
@@ -154,25 +154,25 @@ function addMessageToChannel(data, ws) {
 }
 
 const addMessageToChat = (data, ws) => {
-    if (data.channelType === 'PRIVATE_CHANNEL') {
+    if (data.channelType === 'PERSONAL_CHANNEL') {
         addMessageToPersonal(data);
     } else {
         addMessageToChannel(data, ws);
     }
-}
+};
 
 const shareUsers = (data, ws) => {
     sendToUser({type: USERS_LIST, users: Array.from(usersChannelMap.keys())}, ws)
-}
+};
 
 const shareChannels = (data, ws) => {
     let id = 0
     sendToUser({type: CHANNELS_LIST, channels: Array.from(channelsUserMap.keys()).map(ch => ({name: ch, id: id++})) }, ws)
-}
+};
 
 const showChannelHistory = (data, ws) => {
     sendToUser({type: VIEW_CHANNEL, messages: Array.from(channelsUserMap.get(data.channel).messages), name: data.channel}, ws)
-}
+};
 
 const joinPersonalChat = (data, ws) => {
     let initialMsg = Immutable.List([{ message: 'start chatting', author: '' }])
@@ -185,4 +185,4 @@ const joinPersonalChat = (data, ws) => {
         username: data.username,
         messages: Array.from(value)
     }, ws)
-}
+};

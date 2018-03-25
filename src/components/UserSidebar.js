@@ -1,7 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 
-const Sidebar = (props) => {
+const UserSidebar = (props) => {
 
     const onclick = (name, username) => {
         props.dispatch(name, username)
@@ -20,7 +20,7 @@ const Sidebar = (props) => {
         </aside>
     )
 }
-Sidebar.propTypes = {
+UserSidebar.propTypes = {
     users: PropTypes.arrayOf(
         PropTypes.shape({
             id: PropTypes.number.isRequired,
@@ -30,4 +30,4 @@ Sidebar.propTypes = {
     dispatch: PropTypes.func.isRequired
 }
 
-export default Sidebar
+export default UserSidebar

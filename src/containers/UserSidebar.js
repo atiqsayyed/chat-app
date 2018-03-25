@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import SidebarComponent from '../components/Sidebar'
+import SidebarComponent from '../components/UserSidebar'
 import {requestUserChat} from "../actions";
 
 const mapDispatchToProps = dispatch => ({
@@ -8,6 +8,6 @@ const mapDispatchToProps = dispatch => ({
     }
 })
 
-export const Sidebar = connect(state => ({
+export const UserSidebar = connect(state => ({
     users: state.users
 }), mapDispatchToProps)(SidebarComponent)

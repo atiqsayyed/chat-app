@@ -1,12 +1,12 @@
 import * as types from "../constants/ActionTypes";
 import {PUBLIC_CHANNEL} from "../constants/ActionTypes";
-import {PRIVATE_CHANNEL} from "../constants/ActionTypes";
+import {PERSONAL_CHANNEL} from "../constants/ActionTypes";
 
 const messages = (state = {messages: [], channel: 'general', channelType: PUBLIC_CHANNEL}, action) => {
     switch (action.type) {
         case types.ADD_MESSAGE:
         case types.MESSAGE_RECEIVED:
-            if (action.channelType === 'PRIVATE_CHANNEL') {
+            if (action.channelType === PERSONAL_CHANNEL) {
                 if (state.channel === action.channel)
                     return {
                         messages: state.messages.concat([
@@ -66,7 +66,7 @@ const messages = (state = {messages: [], channel: 'general', channelType: PUBLIC
         case types.REQUEST_CHANNEL_MESSAGES:
             return { messages: state.messages, channel: action.name, channelType: PUBLIC_CHANNEL }
         case types.JOIN_PERSONAL_CHAT:
-            return { messages: state.messages, channel: action.name, channelType: PRIVATE_CHANNEL }
+            return { messages: state.messages, channel: action.name, channelType: PERSONAL_CHANNEL }
         default:
             return state
     }

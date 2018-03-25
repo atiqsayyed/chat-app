@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import "./App.css";
-import {Sidebar} from "./containers/Sidebar";
+import {UserSidebar} from "./containers/UserSidebar";
 import {ChannelsSidebar} from "./containers/ChannelSidebar";
 import {CreateChannel} from "./containers/CreateChannel";
 import {MessagesList} from "./containers/MessagesList";
@@ -12,7 +12,7 @@ class App extends Component {
         return (
             <div id="container">
                 <section id="side">
-                    <Sidebar username={username}/>
+                    <UserSidebar username={username}/>
                 </section>
                 <div className={"menu"}>
                     <MessagesList />
