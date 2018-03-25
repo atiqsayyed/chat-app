@@ -32,7 +32,7 @@ export const requestChannelMessages = (channelName) => ({
 })
 
 export const requestUserChat = (name, username) => ({
-    type: types.REQUEST_USER_CHAT,
+    type: types.JOIN_PERSONAL_CHAT,
     name: name,
     username: username,
 })

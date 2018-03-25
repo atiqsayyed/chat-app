@@ -65,7 +65,7 @@ const messages = (state = {messages: [], channel: 'general', channelType: PUBLIC
             }
         case types.REQUEST_CHANNEL_MESSAGES:
             return { messages: state.messages, channel: action.name, channelType: PUBLIC_CHANNEL }
-        case types.REQUEST_USER_CHAT:
+        case types.JOIN_PERSONAL_CHAT:
             return { messages: state.messages, channel: action.name, channelType: PRIVATE_CHANNEL }
         default:
             return state
