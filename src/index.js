@@ -38,7 +38,7 @@ class UserPage extends  React.Component{
 
             ReactDOM.render(
                 <Provider store={store}>
-                    <App />
+                    <App username={username}/>
                 </Provider>, document.getElementById('root')
             );
         }

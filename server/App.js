@@ -1,9 +1,10 @@
 const WebSocket = require('ws')
+const Option = require('scala-like-option')
 const Immutable = require('immutable')
 
 const wss = new WebSocket.Server({ port: 8989 })
 
-// Map[user, {socket, channels}]
+// Map[user, {Option(socket), channels}]
 let users = Immutable.Map([])
 
 const beginningOfChannel = (name) => ({ message: 'beginning of '+ name + ' :', author: '' })
@@ -47,8 +48,9 @@ const unicast = (data, ws) => {
 const addUser = (data, ws) => {
     let existingChannels = users.get(data.name, {channels: Immutable.List()}).channels
     let subscribedChannels = existingChannels.push(data.name)
+    let opt = Option.Option(ws)
     if (data.name !== null) {
-        users = users.set(data.name, {socket: ws, channels: subscribedChannels})
+        users = users.set(data.name, {socket: opt, channels: subscribedChannels})
         sockets = sockets.set(ws, data.name)
     }
     let index = 0
@@ -123,6 +125,7 @@ const viewChat = (data, ws) => {
         username: data.username,
         messages: Array.from(value)
     }, ws)
+    console.log("**** viewChat")
 }
 
 const createChannel = (data, ws) => {
@@ -171,6 +174,7 @@ wss.on('connection', (ws) => {
                 viewChannel(data, ws)
                 break
             case REQUEST_USER_CHAT:
+                console.log("****8 Request user chat")
                 viewChat(data, ws)
                 break
             default:
@@ -184,7 +188,7 @@ wss.on('connection', (ws) => {
         let socketAndChannels = users.get(user)
         if (socketAndChannels !== undefined) {
             let channels = socketAndChannels.channels
-            users = users.set(user, {socket: null, channels: channels})
+            users = users.set(user, {socket: Option.None(), channels: channels})
         }
     }
 

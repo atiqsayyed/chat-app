@@ -7,8 +7,8 @@ const AddMessage = (props) => {
 
     return (
         <section id="new-message">
-            <h6>Enter message here:</h6>
-            <input
+            <input className={"textarea"}
+                placeholder="Enter your message here"
                 onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                         props.dispatch(input.value, username, props.channel, props.channelType)

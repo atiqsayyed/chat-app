@@ -16,6 +16,14 @@ const createChannel = function* createChannel(params) {
 }
 
 const manageChannelSwitch= function* manageChannelSwith(params) {
+    yield takeEvery(types.REQUEST_USER_CHAT, (action) => {
+        action.author = params.username
+        params.socket.send(JSON.stringify({
+            type: types.REQUEST_USER_CHAT,
+            name: action.name,
+            username: action.username
+        }))
+    })
     yield takeEvery(types.REQUEST_CHANNEL_MESSAGES, (action) => {
         action.author = params.username
         console.log("In ManageChannelSwitch"+params.username)

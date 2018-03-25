@@ -1,6 +1,9 @@
 import * as types from '../constants/ActionTypes';
 
-import {addUser, messageReceived, populateUserList, populateChannelsList, joinChannel, viewChannel} from "../actions/index";
+import {
+    addUser, messageReceived, populateChannelsList, joinChannel, viewChannel,
+    populateUsersList, createChannel, viewChat
+} from "../actions/index";
 
 const setUpSocket = (dispatch, username) =>{
     const socket = new WebSocket('ws://localhost:8989');
@@ -21,31 +24,34 @@ const setUpSocket = (dispatch, username) =>{
     };
 
     socket.onmessage = (event) =>{
-        const data = JSON.parse(event.data);
-        switch (data.type){
+        const data = JSON.parse(event.data)
+        switch (data.type) {
             case types.ADD_MESSAGE:
-                dispatch(messageReceived(data.message,data.author));
-                break;
+                dispatch(messageReceived(data.message, data.author, data.channel))
+                break
             case types.ADD_USER:
-                dispatch(addUser(data.name));
-                break;
+                dispatch(addUser(data.name))
+                break
             case types.USERS_LIST:
-                dispatch(populateUserList(data.users));
-                break;
+                dispatch(populateUsersList(data.users))
+                break
             case types.CHANNELS_LIST:
                 dispatch(populateChannelsList(data.channels))
-                break;
-            case types.JOIN_CHANNEL:{
-                dispatch(joinChannel((data.author, data.name)))
                 break
-            }
-            case types.VIEW_CHANNEL:{
-                console.log("**** dispatching View Channel to component")
+            case types.VIEW_CHANNEL:
                 dispatch(viewChannel(data.name, data.messages))
                 break
-            }
-            default:
+            case types.CREATE_CHANNEL:
+                dispatch(createChannel(data.author, data.name))
+                break
+            case types.JOIN_CHANNEL:
+                dispatch(joinChannel((data.author, data.name)))
+                break
+            case types.VIEW_CHAT:
+                dispatch(viewChat((data.name, data.username, data.messages)))
                 break;
+            default:
+                break
         }
     };
     return socket;

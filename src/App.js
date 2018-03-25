@@ -8,17 +8,18 @@ import {AddMessage} from "./containers/AddMessage";
 
 class App extends Component {
     render() {
+        const username = this.props.username;
         return (
             <div id="container">
                 <section id="side">
-                    <Sidebar />
+                    <Sidebar username={username}/>
                 </section>
-                <section id="main">
+                <div className={"menu"}>
                     <MessagesList />
-                    <AddMessage />
-                </section>
+                </div>
+                <AddMessage username={username}/>
                 <section id="side-2">
-                    <CreateChannel username={''}/>
+                    <CreateChannel/>
                     <ChannelsSidebar/>
                 </section>
             </div>
