@@ -1,5 +1,4 @@
 const WebSocket = require('ws')
-const Option = require('scala-like-option')
 const Immutable = require('immutable')
 
 const wss = new WebSocket.Server({ port: 8989 })
@@ -48,9 +47,8 @@ const unicast = (data, ws) => {
 const addUser = (data, ws) => {
     let existingChannels = users.get(data.name, {channels: Immutable.List()}).channels
     let subscribedChannels = existingChannels.push(data.name)
-    let opt = Option.Option(ws)
     if (data.name !== null) {
-        users = users.set(data.name, {socket: opt, channels: subscribedChannels})
+        users = users.set(data.name, {socket: ws, channels: subscribedChannels})
         sockets = sockets.set(ws, data.name)
     }
     let index = 0
@@ -104,7 +102,6 @@ const addMessage = (data, ws) => {
 const sendUsers = (data, ws) => {
     unicast({type: USERS_LIST, users: Array.from(users.keys())}, ws)
 }
-
 const sendChannels = (data, ws) => {
     let id = 0
     unicast({type: CHANNELS_LIST, channels: Array.from(channels.keys()).map(ch => ({name: ch, id: id++})) }, ws)
@@ -150,6 +147,7 @@ const joinChannel = (data, ws) => {
 
 wss.on('connection', (ws) => {
     ws.on('message', (message) => {
+        console.log("*** data received"+message)
         const data = JSON.parse(message)
         switch (data.type) {
             case ADD_USER:
@@ -184,12 +182,7 @@ wss.on('connection', (ws) => {
 
     function removeUser(ws) {
         let user = sockets.get(ws)
-        sockets = sockets.remove(ws)
-        let socketAndChannels = users.get(user)
-        if (socketAndChannels !== undefined) {
-            let channels = socketAndChannels.channels
-            users = users.set(user, {socket: Option.None(), channels: channels})
-        }
+        users = users.delete(user)
     }
 
     ws.on('close', () => {

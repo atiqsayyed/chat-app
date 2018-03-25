@@ -45,9 +45,9 @@ class UserPage extends  React.Component{
     }
     render() {
         return (
-            <div>
-                <input type='text' value={this.state.username} onChange={this.handleChange} />
-                <button onClick={(e) => this.renderChatApp(e)}>JOIN</button>
+            <div id={"login"}>
+                <input type='text' placeholder={"Please enter your name to login"} value={this.state.username} onChange={this.handleChange} />
+                <button onClick={(e) => this.renderChatApp(e)}>Login</button>
             </div>
         );
     }

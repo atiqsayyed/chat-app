@@ -9,5 +9,5 @@ const mapDispatchToProps = dispatch => ({
 })
 
 export const Sidebar = connect(state => ({
-    users: state.users.filter(user => user.name != null)
+    users: state.users
 }), mapDispatchToProps)(SidebarComponent)
